@@ -1,1 +1,40 @@
 Final Project TSA NP B - Yogi Ardiansyah - Konfigurasi
+-----------------------------------------
+                RTR UPI
+-----------------------------------------
+Router>ena
+Router#conf t
+Router(config)#hostname RTR_UPI
+RTR_UPI(config)#
+RTR_UPI(config)#int g0/0/0
+RTR_UPI(config-if)#ip add 192.168.10.1 255.255.255.0
+RTR_UPI(config-if)#no shu
+RTR_UPI(config-if)#ex
+RTR_UPI(config)#int se0/1/0
+RTR_UPI(config-if)#ip add 192.168.0.1 255.255.255.252
+RTR_UPI(config-if)#no shu
+RTR_UPI(config-if)#do show ip int brief
+RTR_UPI(config-if)#ex
+RTR_UPI(config)#enable secret kerjasama
+RTR_UPI(config)#ip domain-name kerjasama.com
+RTR_UPI(config)#crypto key generate rsa general-keys modulus 1024
+RTR_UPI(config)#username kerjasama password kerjasama
+RTR_UPI(config)#line vty 0 4
+RTR_UPI(config-line)#login local
+RTR_UPI(config-line)#transport input ssh
+RTR_UPI(config-line)#ex
+RTR_UPI(config)#ip dhcp pool UPI
+RTR_UPI(dhcp-config)#network 192.168.10.0 255.255.255.0
+RTR_UPI(dhcp-config)#default-router 192.168.10.1
+RTR_UPI(dhcp-config)#dns-server 192.168.10.253
+RTR_UPI(dhcp-config)#ex
+RTR_UPI(config)#ip dhcp excluded-address 192.168.10.1 192.168.10.2
+RTR_UPI(config)#ip dhcp excluded-address 192.168.10.253 192.168.10.254
+RTR_UPI(config)#router eigrp 64512
+RTR_UPI(config-router)#network 192.168.10.0
+RTR_UPI(config-router)#network 192.168.0.0
+RTR_UPI(config-router)#end
+RTR_UPI#show ip protocols
+RTR_UPI#show run
+RTR_UPI#copy run start
+RTR_UPI#show start
